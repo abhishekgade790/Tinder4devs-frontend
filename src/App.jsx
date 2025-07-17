@@ -7,6 +7,8 @@ import { Provider } from "react-redux";
 import appStore from "./store/appStore"
 import Body from "./Body";
 import { ToastProvider } from "./utils/ToastProvider";
+import Connections from "./components/Connections";
+import Requests from "./components/Requests";
 
 function App() {
 
@@ -21,6 +23,8 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/connections" element={<Connections />} />
+                <Route path="/requests" element={<Requests />} />
               </Route>
             </Routes>
           </BrowserRouter>
