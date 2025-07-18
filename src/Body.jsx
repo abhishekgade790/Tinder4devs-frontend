@@ -31,7 +31,7 @@ const Body = () => {
     }, [location.pathname]);
 
     return (
-        <div>
+        <div className="">
             <Navbar />
             <Outlet />
             <Footer />

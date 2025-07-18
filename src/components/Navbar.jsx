@@ -25,7 +25,7 @@ function Navbar() {
 
     const { photoUrl, firstName } = user || "";
     return (
-        <div className="navbar bg-base-300 shadow-sm px-12 h-20">
+        <div className="navbar bg-base-300 shadow-sm border-b border-neutral-content/10 px-12 h-24">
             <div className="flex-1">
                 <Link to={user ? "/" : "/login"} className="btn btn-ghost text-xl">Tinder4devs</Link>
             </div>
@@ -49,6 +49,7 @@ function Navbar() {
                                     <span className="badge">New</span>
                                 </Link>
                             </li>
+                            <li><Link to={"/requests"}>Requests</Link></li>
                             <li><Link to={"/connections"}>Connections</Link></li>
                             <li ><Link onClick={handleLogout}>Logout</Link></li>
                         </ul>
