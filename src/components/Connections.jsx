@@ -18,9 +18,7 @@ const Connections = () => {
     };
 
     useEffect(() => {
-        if (!connections || connections.length === 0) {
-            fetchConnections();
-        }
+        fetchConnections();
     }, []);
 
     if (!connections) {
@@ -65,7 +63,7 @@ const Connections = () => {
                         <div className="flex-1">
                             <h3 className="font-semibold text-base">{conn.firstName} {conn.lastName}</h3>
                             <p className="text-sm text-base-content/70 line-clamp-1">{conn.about}</p>
-                            
+
                         </div>
                         <div className="flex flex-col sm:flex-row gap-2 ml-4">
                             <button className="btn btn-sm btn-primary">

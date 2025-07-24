@@ -117,6 +117,7 @@ function EditProfile({ user = {} }) {
                     photoUrl={photoUrl}
                     about={about}
                     skills={skills}
+                    _id={user._id}
                   />
                 </div>
               </div>

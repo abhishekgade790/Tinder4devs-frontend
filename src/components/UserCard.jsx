@@ -176,9 +176,9 @@ const UserCard = ({ firstName, lastName, age, gender, photoUrl, about, skills, _
                   </div>
 
                   {/* Action buttons */}
-                  <div className="flex justify-center gap-6">
+                  <div className="flex justify-center gap-4">
                     <button
-                      className="btn btn-circle btn-lg btn-outline btn-error hover:btn-error shadow-lg"
+                      className="btn btn-md w-3/7 btn-error hover:btn-error shadow-lg"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleButtonClick(false, "ignore", _id, firstName);
@@ -189,7 +189,7 @@ const UserCard = ({ firstName, lastName, age, gender, photoUrl, about, skills, _
                       </svg>
                     </button>
                     <button
-                      className="btn btn-circle btn-lg btn-outline btn-success hover:btn-success shadow-lg"
+                      className="btn btn-md w-3/7  btn-success hover:btn-success shadow-lg"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleButtonClick(true, "interested", _id, firstName);
