@@ -82,8 +82,8 @@ const Requests = () => {
                                     className="w-14 h-14 rounded-full object-cover ring ring-primary ring-offset-base-100 mr-4"
                                 />
                                 <div>
-                                    <h3 className="font-semibold text-lg text-white">{firstName} {lastName}</h3>
-                                    <p className="text-sm text-neutral-content line-clamp-2">{about}</p>
+                                    <h3 className="font-semibold text-lg">{firstName} {lastName}</h3>
+                                    <p className="text-sm text-neutral line-clamp-2">{about}</p>
 
                                 </div>
                             </div>

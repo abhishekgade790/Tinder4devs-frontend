@@ -16,6 +16,10 @@ const UserCard = ({ firstName, lastName, age, gender, photoUrl, about, skills, _
   const dispatch = useDispatch();
 
   const handleMouseDown = (e) => {
+    // Don't start dragging if clicking on buttons or interactive elements
+    if (e.target.closest('button') || e.target.closest('.btn')) {
+      return;
+    }
     if (isAnimating) return;
     setIsDragging(true);
     setStartPos({ x: e.clientX, y: e.clientY });
@@ -32,7 +36,10 @@ const UserCard = ({ firstName, lastName, age, gender, photoUrl, about, skills, _
     if (isAnimating) return;
     const threshold = 100;
     if (Math.abs(dragOffset.x) > threshold) {
-      animateSwipe(dragOffset.x > 0);
+      const isRight = dragOffset.x > 0;
+      const status = isRight ? "interested" : "ignore";
+      animateSwipe(isRight);
+      handleSwipeAction(status, _id, firstName);
     } else {
       setDragOffset({ x: 0, y: 0 });
       setIsDragging(false);
@@ -47,19 +54,16 @@ const UserCard = ({ firstName, lastName, age, gender, photoUrl, about, skills, _
     });
 
     setTimeout(() => {
+      dispatch(removeUserFromFeed(_id));
       setDragOffset({ x: 0, y: 0 });
       setIsDragging(false);
       setIsAnimating(false);
     }, 300);
   };
 
-  const handleButtonClick = async (isLike, status, _id, firstName) => {
+  const handleSwipeAction = async (status, _id, firstName) => {
     try {
       await axios.post(`${BASE_URL}/request/send/${status}/${_id}`, {}, { withCredentials: true });
-
-      if (isAnimating) return;
-      animateSwipe(isLike);
-      dispatch(removeUserFromFeed(_id))
 
       if (status === "interested") {
         toast.success(`You've shown interest in ${firstName}.`, {
@@ -80,14 +84,27 @@ const UserCard = ({ firstName, lastName, age, gender, photoUrl, about, skills, _
     }
   };
 
+  const handleButtonClick = async (e, isLike, status, _id, firstName) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isAnimating || isDragging) {
+      return;
+    }
+    
+    // Start animation immediately
+    animateSwipe(isLike);
+    
+    // Handle API call separately
+    handleSwipeAction(status, _id, firstName);
+  };
 
   const getRotation = () => dragOffset.x * 0.1;
   const getOpacity = () => Math.max(0.5, 1 - Math.abs(dragOffset.x) / 200);
 
   return (
-    <div className="flex items-center justify-center min-h-screen p-4">
+    <div className="flex items-center justify-center p-4">
       <div
-        className="relative w-80 h-[540px] rounded-2xl cursor-grab active:cursor-grabbing select-none"
+        className={`relative w-80 h-[540px] rounded-2xl cursor-grab active:cursor-grabbing select-none ${isAnimating ? 'pointer-events-none' : ''}`}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -129,7 +146,7 @@ const UserCard = ({ firstName, lastName, age, gender, photoUrl, about, skills, _
 
             {/* Gradient and name */}
             <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/80 to-transparent" />
-            <div className="absolute bottom-4 left-4 text-white">
+            <div className="absolute bottom-4 left-4 ">
               <h2 className="text-2xl font-bold">{firstName} {lastName} {age && (<span className='text-lg font-normal opacity-90'>({age})</span>)}</h2>
             </div>
 
@@ -138,7 +155,9 @@ const UserCard = ({ firstName, lastName, age, gender, photoUrl, about, skills, _
               className="absolute bottom-4 right-4 btn btn-circle btn-sm bg-base-100/20 border-none text-base-100 hover:bg-base-100/30 backdrop-blur-sm"
               onClick={(e) => {
                 e.stopPropagation();
-                setIsFlipped(!isFlipped);
+                if (!isDragging && !isAnimating) {
+                  setIsFlipped(!isFlipped);
+                }
               }}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -148,7 +167,7 @@ const UserCard = ({ firstName, lastName, age, gender, photoUrl, about, skills, _
           </div>
 
           {/* Info & Skills */}
-          <div className="h-1/3 px-4 py-4 flex flex-col justify-between">
+          <div className="h-1/3 px-4 py-4 flex flex-col justify-between bg-base-200">
             {!isFlipped ? (
               <>
                 <p className="text-base-content/70 text-sm line-clamp-2 mb-3">
@@ -165,10 +184,15 @@ const UserCard = ({ firstName, lastName, age, gender, photoUrl, about, skills, _
                         <div key={index} className="badge badge-primary badge-sm">{skill}</div>
                       ))}
                       {skills?.length > 3 && (
-                        <span className="text-sm text-base-content/60 cursor-pointer hover:text-primary" onClick={(e) => {
-                          e.stopPropagation();
-                          setIsFlipped(!isFlipped);
-                        }}>
+                        <span 
+                          className="text-sm text-base-content/60 cursor-pointer hover:text-primary" 
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (!isDragging && !isAnimating) {
+                              setIsFlipped(!isFlipped);
+                            }
+                          }}
+                        >
                           +{skills.length - 3}
                         </span>
                       )}
@@ -178,22 +202,22 @@ const UserCard = ({ firstName, lastName, age, gender, photoUrl, about, skills, _
                   {/* Action buttons */}
                   <div className="flex justify-center gap-4">
                     <button
-                      className="btn btn-md w-3/7 btn-error hover:btn-error shadow-lg"
+                      className={`btn btn-md w-3/7 btn-error hover:btn-error shadow-lg ${(isAnimating || isDragging) ? 'opacity-50' : ''}`}
                       onClick={(e) => {
-                        e.stopPropagation();
-                        handleButtonClick(false, "ignore", _id, firstName);
+                        handleButtonClick(e, false, "ignore", _id, firstName);
                       }}
+                      style={{ pointerEvents: (isAnimating || isDragging) ? 'none' : 'auto' }}
                     >
                       <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
                       </svg>
                     </button>
                     <button
-                      className="btn btn-md w-3/7  btn-success hover:btn-success shadow-lg"
+                      className={`btn btn-md w-3/7 btn-success hover:btn-success shadow-lg ${(isAnimating || isDragging) ? 'opacity-50' : ''}`}
                       onClick={(e) => {
-                        e.stopPropagation();
-                        handleButtonClick(true, "interested", _id, firstName);
+                        handleButtonClick(e, true, "interested", _id, firstName);
                       }}
+                      style={{ pointerEvents: (isAnimating || isDragging) ? 'none' : 'auto' }}
                     >
                       <svg className="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />

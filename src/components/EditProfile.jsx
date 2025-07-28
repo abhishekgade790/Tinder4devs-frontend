@@ -38,7 +38,7 @@ function calculateAge(birthDateStr) {
 function EditProfile({ user = {} }) {
   const [firstName, setFirstName] = useState(user.firstName || '');
   const [lastName, setLastName] = useState(user.lastName || '');
-  const [gender, setGender] = useState(user.gender || 'Male');
+  const [gender, setGender] = useState(user.gender || 'male');
   const [photoUrl, setPhotoUrl] = useState(user.photoUrl || '');
   const [birthDate, setBirthDate] = useState(
     user.birthDate ? new Date(user.birthDate) : null
@@ -46,6 +46,11 @@ function EditProfile({ user = {} }) {
   const [skills, setSkills] = useState(user.skills || []);
   const [about, setAbout] = useState(user.about || '');
   const [isSaving, setIsSaving] = useState(false);
+  const [isChangePassword, setChangePassword] = useState(false);
+
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
 
   const toast = useToast();
@@ -88,6 +93,43 @@ function EditProfile({ user = {} }) {
     }
   };
 
+  const handleChangePassword = async () => {
+    if (!oldPassword || !newPassword || !confirmPassword) {
+      return toast.error("Please fill all fields", { duration: 3000 });
+    }
+    if (newPassword !== confirmPassword) {
+      return toast.error("New password and confirm password do not match", { duration: 3000 });
+    }
+    setIsSaving(true);
+    try {
+      const response = await axios.patch(
+        `${BASE_URL}/profile/update-password`,
+        {
+          oldPassword,
+          newPassword,
+        },
+        { withCredentials: true }
+      );
+      toast.success("Password Changed Successfully!", {
+        duration: 3000,
+      });
+      setOldPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
+      setChangePassword(false);
+    } catch (error) {
+      console.log(error)
+      toast.error(error.response?.data?.message || "Something went wrong", {
+        duration: 3000,
+      });
+    } finally {
+      setTimeout(() => {
+        setIsSaving(false);
+      }, 2000); // re-enable after 2 seconds
+    }
+
+  }
+
 
   return user ? (
     <div className="min-h-screen bg-300">
@@ -108,7 +150,7 @@ function EditProfile({ user = {} }) {
                 <h2 className="text-2xl font-semibold text-center mb-6 text-secondary">
                   Live Preview
                 </h2>
-                <div className="flex justify-center">
+                <div className="flex justify-center ">
                   <UserCard
                     firstName={firstName}
                     lastName={lastName}
@@ -129,11 +171,11 @@ function EditProfile({ user = {} }) {
             <div className="bg-base-200 rounded-2xl shadow-lg border border-base-300 overflow-hidden">
               <div className="bg-gradient-to-r from-primary to-secondary p-6">
                 <h2 className="text-2xl font-bold text-primary-content text-center">
-                  Profile Information
+                  {isChangePassword ? "Update Password" : "Profile Information"}
                 </h2>
               </div>
 
-              <div className="p-6 space-y-6">
+              {!isChangePassword ? <div className="p-6 space-y-6">
 
                 {/* Name Fields */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -179,7 +221,7 @@ function EditProfile({ user = {} }) {
                       type="url"
                       value={photoUrl}
                       onChange={(e) => setPhotoUrl(e.target.value)}
-                      className="input input-bordered input-secondary focus:input-secondary w-full"
+                      className="input input-bordered input-primary focus:input-primary w-full"
                       placeholder="Enter image URL"
                     />
                   </div>
@@ -199,7 +241,7 @@ function EditProfile({ user = {} }) {
                       showMonthDropdown
                       dropdownMode="select"
                       maxDate={new Date()}
-                      className="input input-bordered input-accent focus:input-accent  w-full"
+                      className="input input-bordered input-primary focus:input-primary  w-full"
                       placeholderText="Select birth date"
                     />
                   </div>
@@ -210,7 +252,7 @@ function EditProfile({ user = {} }) {
                     <select
                       value={gender}
                       onChange={(e) => setGender(e.target.value)}
-                      className="select select-bordered select-accent focus:select-accent w-full"
+                      className="select select-bordered select-primary focus:select-primary w-full"
                     >
                       <option value="male">male</option>
                       <option value="female">female</option>
@@ -236,7 +278,7 @@ function EditProfile({ user = {} }) {
                           .filter((s) => s !== '')
                       )
                     }
-                    className="input input-bordered input-secondary focus:input-secondary w-full"
+                    className="input input-bordered input-primary focus:input-primary w-full"
                     placeholder="e.g., JavaScript, React, Node.js"
                   />
                   <label className="label">
@@ -263,9 +305,15 @@ function EditProfile({ user = {} }) {
                     maxLength={500}
                   />
                 </div>
+                <div className='form-control'>
+                  <label className='label'>
+                    <span className='label-text font-medium text-primary'>Update Password</span>
+                  </label>
+                  <button className='btn btn-soft w-full' onClick={() => setChangePassword(true)}>Click here to change Password</button>
+                </div>
 
                 {/* Action Buttons */}
-                <div className="flex flex-col sm:flex-row gap-3 pt-4">
+                <div className="flex flex-col sm:flex-row gap-3 ">
                   <button
                     onClick={handleSaveChanges}
                     className="btn btn-primary flex-1 btn-lg"
@@ -281,7 +329,7 @@ function EditProfile({ user = {} }) {
                     {isSaving ? 'Saving...' : 'Save Changes'}
                   </button>
 
-                  <button className="btn btn-outline btn-secondary flex-1 btn-lg" onClick={() => window.location.reload()}>
+                  <button className="btn btn-outline flex-1 btn-lg" onClick={() => window.location.reload()}>
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -289,6 +337,67 @@ function EditProfile({ user = {} }) {
                   </button>
                 </div>
               </div>
+                :
+                <div className='p-6 space-y-6'>
+                  <div className='form-control'>
+                    <label className='label text-start'>Old password</label>
+                    <input
+                      type='text'
+                      className='input input-bordered input-primary w-full'
+                      value={oldPassword}
+                      onChange={(e) => setOldPassword(e.target.value)}
+                      placeholder='Enter Old Password'
+                    >
+                    </input>
+                  </div>
+                  <div className='form-control'>
+                    <label className='label text-start'>New password</label>
+                    <input
+                      type='text'
+                      className='input input-bordered input-primary w-full'
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      placeholder='Enter New Password'
+                    >
+                    </input>
+                  </div>
+                  <div className='form-control'>
+                    <label className='label text-start'>Confirm password</label>
+                    <input
+                      type='text'
+                      className='input input-bordered input-primary w-full'
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      placeholder='Confirm New Password'
+                    >
+                    </input>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-3 ">
+                    <button
+                      onClick={handleChangePassword}
+                      className="btn btn-primary flex-1 btn-lg"
+                      disabled={isSaving}
+                    >
+                      {isSaving ? (
+                        <span className="loading loading-spinner mr-2" />
+                      ) : (
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                      )}
+                      {isSaving ? 'Saving...' : 'Changes Password'}
+                    </button>
+
+                    <button className="btn btn-outline flex-1 btn-lg" onClick={() => { setChangePassword(false); setOldPassword(''); setNewPassword(''); setConfirmPassword(''); }}>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              }
             </div>
           </div>
         </div>

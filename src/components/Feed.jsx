@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { BASE_URL } from '../utils/utils'
 import { addFeed } from '../store/feedSlice'
-import UserCard from "../components/UserCard"
+import UserCard from "./UserCard"
 
 function Feed() {
   const dispatch = useDispatch()
@@ -25,7 +25,7 @@ function Feed() {
     }
 
     fetchFeed()
-  }, [])
+  }, [feedData])
 
   if (error) return <div className="text-red-500 text-center">{error}</div>
 
@@ -42,7 +42,7 @@ function Feed() {
     return (
       <div className="min-h-screen bg-base-200 flex items-center justify-center">
         <div className="text-center">
-          <p className="text-lg text-base-content/70">Something went wrong. please try again..</p>
+          <div className="loading loading-spinner loading-lg text-primary mb-4"></div>
         </div>
       </div>
     );

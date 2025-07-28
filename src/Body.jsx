@@ -23,7 +23,7 @@ const Body = () => {
             }
         };
 
-        if ((location.pathname === "/login" || location.pathname === "/forgot-password")) return;
+        if ((location.pathname === "/login" ||location.pathname === "/signup" || location.pathname === "/forgot-password")) return;
 
         if (!user || Object.keys(user).length === 0) {
             fetchUser();

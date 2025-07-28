@@ -9,6 +9,7 @@ import Body from "./Body";
 import { ToastProvider } from "./utils/ToastProvider";
 import Connections from "./components/Connections";
 import Requests from "./components/Requests";
+import SignUp from "./components/SignUp";
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
               <Route path="/" element={<Body />} >
                 <Route path="/" element={<Feed />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<SignUp />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/connections" element={<Connections />} />
