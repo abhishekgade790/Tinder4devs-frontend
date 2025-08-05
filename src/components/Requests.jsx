@@ -83,7 +83,7 @@ const Requests = () => {
                                 />
                                 <div>
                                     <h3 className="font-semibold text-lg">{firstName} {lastName}</h3>
-                                    <p className="text-sm text-neutral line-clamp-2">{about}</p>
+                                    <p className="text-sm text-base-content/70 line-clamp-2">{about}</p>
 
                                 </div>
                             </div>

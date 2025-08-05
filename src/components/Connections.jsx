@@ -61,7 +61,7 @@ const Connections = () => {
                             className="w-14 h-14 rounded-full object-cover ring ring-primary ring-offset-base-100 mr-4"
                         />
                         <div className="flex-1">
-                            <h3 className="font-semibold text-base">{conn.firstName} {conn.lastName}</h3>
+                            <h3 className="font-semibold text-lg">{conn.firstName} {conn.lastName}</h3>
                             <p className="text-sm text-base-content/70 line-clamp-1">{conn.about}</p>
 
                         </div>

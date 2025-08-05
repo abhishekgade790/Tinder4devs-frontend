@@ -2,7 +2,7 @@
   @import 'react-datepicker/dist/react-datepicker.css';
 
   @plugin "daisyui" {
-    themes: light --default, sunset --prefersdark;
+    themes: light --default, halloween --prefersdark;
   }
 
   @plugin "daisyui/theme" {

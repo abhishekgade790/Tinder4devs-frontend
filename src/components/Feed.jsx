@@ -64,7 +64,7 @@ function Feed() {
       </div>
     ) : (
       <div className="text-center min-h-screen flex  justify-center items-center">
-        <span className="loading loading-bars text-info loading-md"></span>
+        <span className="loading loading-bars text-primary loading-md"></span>
       </div>
     )
   )
