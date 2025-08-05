@@ -52,7 +52,7 @@ const Connections = () => {
             </div>
 
             {/* Chat-Style List */}
-            <div className="max-w-3xl mx-auto rounded-lg shadow-md divide-y divide-base-300 ">
+            <div className="max-w-3xl mx-auto rounded-lg divide-y divide-base-300 ">
                 {connections.map((conn) => (
                     <div key={conn._id} className="flex my-2 items-center rounded-lg bg-base-200 p-4 hover:bg-base-300 transition-all">
                         <img

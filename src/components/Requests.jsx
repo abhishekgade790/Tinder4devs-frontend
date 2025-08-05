@@ -70,7 +70,7 @@ const Requests = () => {
                     You Recieved {requests.length} developer Request{requests.length !== 1 ? 's' : ''}.
                 </p>
             </div>
-            <div className="max-w-3xl mx-auto rounded-lg shadow-md divide-y divide-base-300">
+            <div className="max-w-3xl mx-auto rounded-lg  divide-y divide-base-300">
                 {requests.map((req) => {
                     const { firstName, lastName, photoUrl, about, skills } = req.fromUserId;
                     return (
@@ -90,7 +90,7 @@ const Requests = () => {
                             <div className="flex flex-col sm:flex-row gap-2 mt-4 sm:mt-0">
                                 <button
                                     onClick={() => handleAccept(req._id)}
-                                    className="btn btn-sm btn-accent"
+                                    className="btn btn-sm btn-success"
                                 >
                                     Accept
                                 </button>
