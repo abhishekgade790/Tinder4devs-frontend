@@ -4,11 +4,25 @@ import { useDispatch, useSelector } from 'react-redux'
 import { BASE_URL } from '../utils/utils'
 import { addFeed } from '../store/feedSlice'
 import UserCard from "./UserCard"
+import { Cpu } from 'lucide-react'
+import { Terminal } from 'lucide-react'
+import { Globe } from 'lucide-react'
+import { Rocket } from 'lucide-react'
+import { addRequests } from '../store/requestSlice'
 
 function Feed() {
   const dispatch = useDispatch()
   const feedData = useSelector((store) => store.feed)
   const [error, setError] = useState("")
+
+  const fetchRequests = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}/user/requests/received`, { withCredentials: true });
+      dispatch(addRequests(res?.data?.connectionRequests || []));
+    } catch (error) {
+      console.error("Failed to fetch requests", error);
+    }
+  };
 
   useEffect(() => {
     const fetchFeed = async () => {
@@ -25,9 +39,10 @@ function Feed() {
     }
 
     fetchFeed()
+    fetchRequests();
   }, [feedData])
 
-  if (error) return <div className="text-red-500 text-center">{error}</div>
+  if (error) return <div className="text-red-500 min-h-screen text-center">{error}</div>
 
   if (!feedData) {
     <div className="min-h-screen bg-base-200 flex items-center justify-center">
@@ -50,7 +65,7 @@ function Feed() {
 
   return (
     feedData && feedData.length > 0 ? (
-      <div className='min-h-screen flex items-center justify-center'>
+      <div className="hero min-h-[90vh] bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/10 relative overflow-hidden">
         <UserCard
           firstName={feedData[0].firstName}
           lastName={feedData[0].lastName}
@@ -61,6 +76,19 @@ function Feed() {
           skills={feedData[0].skills}
           _id={feedData[0]._id}
         />
+        {/* Animated background elements */}
+        <div className="absolute top-10 left-10 opacity-20">
+          <Cpu className="w-16 h-16 text-primary animate-pulse" />
+        </div>
+        <div className="absolute top-20 right-20 opacity-20">
+          <Terminal className="w-12 h-12 text-secondary animate-bounce" style={{ animationDelay: '1s' }} />
+        </div>
+        <div className="absolute bottom-20 left-20 opacity-20">
+          <Globe className="w-14 h-14 text-accent animate-spin" style={{ animationDuration: '10s' }} />
+        </div>
+        <div className="absolute bottom-10 right-10 opacity-20">
+          <Rocket className="w-10 h-10 text-info animate-pulse" style={{ animationDelay: '2s' }} />
+        </div>
       </div>
     ) : (
       <div className="text-center min-h-screen flex  justify-center items-center">

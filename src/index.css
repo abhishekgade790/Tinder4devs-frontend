@@ -2,13 +2,13 @@
   @import 'react-datepicker/dist/react-datepicker.css';
 
   @plugin "daisyui" {
-    themes: light --default, business --prefersdark;
+    themes: light --default, dark --prefersdark;
   }
 
   @plugin "daisyui/theme" {
     name: "devhubdark";
-    default: false;
-    prefersdark: false;
+    default: true;
+    prefersdark: true;
     color-scheme: "dark";
 
     --color-base-100: oklch(15% 0.02 270);
