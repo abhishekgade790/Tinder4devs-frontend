@@ -8,12 +8,21 @@ import { Link, useNavigate } from 'react-router'
 import { removeFeed } from '../store/feedSlice'
 import { Github, Heart, Users, Code2, Zap, User, Settings, UserPlus, LogOut, Bell } from 'lucide-react'
 import { addRequests } from '../store/requestSlice'
+import { IoColorPalette, IoColorPaletteOutline } from 'react-icons/io5'
+import { useState } from 'react'
 
 function Navbar() {
     const user = useSelector(store => store.user)
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const requests = useSelector(store => store.requests);
+    const [isThemeOpen, setIsThemeOpen] = useState(false);
+    const [theme, setTheme] = useState(localStorage.getItem("theme") || "default");
+
+    useEffect(() => {
+        document.documentElement.setAttribute("data-theme", theme);
+        localStorage.setItem("theme", theme);
+    }, [theme]);
 
     const fetchRequests = async () => {
         try {
@@ -177,14 +186,35 @@ function Navbar() {
                                     </Link>
                                 </li>
 
-                                <li>
-                                    <Link
-                                        to="/settings"
-                                        className="flex items-center gap-2 hover:bg-info/10 transition-colors duration-200"
-                                    >
-                                        <Settings className="w-4 h-4" />
-                                        Settings
-                                    </Link>
+                                <li >
+                                    <div className="flex flex-col items-start gap-2 hover:bg-info/10 transition-colors duration-200">
+                                        <span className='flex gap-2 w-full' onClick={() => setIsThemeOpen(!isThemeOpen)}>
+                                            <IoColorPaletteOutline className="w-4 h-4" />
+                                            Theme
+                                        </span>
+                                       <fieldset className={`flex flex-col gap-2 ${isThemeOpen ? 'block' : 'hidden'}`}>
+                                            <label className="flex gap-2 cursor-pointer items-center">
+                                                <input type="radio" name="theme-radios" checked={theme==='default'} className="radio radio-xs theme-controller" value="default" onChange={(e) => setTheme(e.target.value)} />
+                                                Default
+                                            </label>
+                                            <label className="flex gap-2 cursor-pointer items-center">
+                                                <input type="radio" name="theme-radios" checked={theme==='light'} className="radio radio-xs theme-controller" value="light" onChange={(e) => setTheme(e.target.value)} />
+                                                Light
+                                            </label>
+                                            <label className="flex gap-2 cursor-pointer items-center">
+                                                <input type="radio" name="theme-radios" checked={theme==='dark'} className="radio radio-xs theme-controller" value="dark" onChange={(e) => setTheme(e.target.value)} />
+                                                Dark
+                                            </label>
+                                            <label className="flex gap-2 cursor-pointer items-center">
+                                                <input type="radio" name="theme-radios" checked={theme==='devhubdark'} className="radio radio-xs theme-controller" value="devhubdark" onChange={(e) => setTheme(e.target.value)} />
+                                                DevHub Dark
+                                            </label>
+                                            <label className="flex gap-2 cursor-pointer items-center">
+                                                <input type="radio" name="theme-radios" checked={theme==='business'} className="radio radio-xs theme-controller" value="business" onChange={(e) => setTheme(e.target.value)} />
+                                                Business
+                                            </label>
+                                        </fieldset>
+                                    </div>
                                 </li>
 
                                 <div className="divider my-2"></div>
