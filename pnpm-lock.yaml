@@ -26,6 +26,9 @@ importers:
       lucide-react:
         specifier: ^0.539.0
         version: 0.539.0(react@19.1.0)
+      nodemailer:
+        specifier: ^7.0.5
+        version: 7.0.5
       react:
         specifier: ^19.1.0
         version: 19.1.0
@@ -1162,6 +1165,10 @@ packages:
 
   node-releases@2.0.19:
     resolution: {integrity: sha512-xxOWJsBKtzAq7DY0J+DTzuz58K8e7sJbdgwkbMWQe8UYB6ekmsQ45q0M/tJDsGaZmbC+l7n57UV8Hl5tHxO9uw==}
+
+  nodemailer@7.0.5:
+    resolution: {integrity: sha512-nsrh2lO3j4GkLLXoeEksAMgAOqxOv6QumNRVQTJwKH4nuiww6iC2y7GyANs9kRAxCexg3+lTWM3PZ91iLlVjfg==}
+    engines: {node: '>=6.0.0'}
 
   optionator@0.9.4:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
@@ -2362,6 +2369,8 @@ snapshots:
   natural-compare@1.4.0: {}
 
   node-releases@2.0.19: {}
+
+  nodemailer@7.0.5: {}
 
   optionator@0.9.4:
     dependencies:

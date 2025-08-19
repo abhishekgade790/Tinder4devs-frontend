@@ -227,7 +227,7 @@ const UserCard = ({ firstName, lastName, age, gender, photoUrl, about, skills, _
                 </div>
               </>
             ) : (
-              <div className="space-y-3">
+              <div className="space-y-3 overflow-y-auto h-full scrollbar-hide">
                 <h3 className="text-sm font-semibold text-base-content mb-3">Skills & Info</h3>
                 <div className="grid grid-cols-3 gap-2">
                   {skills?.map((skill, index) => (
