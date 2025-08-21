@@ -65,7 +65,7 @@ function Premium() {
             name: 'Tinder4Devs Premium',
             description: 'become a premium member',
             order_id: order_id, // This is the order_id created in the backend
-            callback_url: 'http://localhost:5173/premium', // Your success URL
+            callback_url: 'https://tinder4devs-backend.onrender.com/payment/webhook', // Your success URL
             prefill: {
                 name: notes.firstName + ' ' + notes.lastName,
                 email: notes.email,
