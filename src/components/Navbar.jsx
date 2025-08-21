@@ -10,6 +10,7 @@ import { Github, Heart, Users, Code2, Zap, User, Settings, UserPlus, LogOut, Bel
 import { addRequests } from '../store/requestSlice'
 import { IoColorPalette, IoColorPaletteOutline } from 'react-icons/io5'
 import { useState } from 'react'
+import { Crown } from 'lucide-react'
 
 function Navbar() {
     const user = useSelector(store => store.user)
@@ -183,6 +184,15 @@ function Navbar() {
                                     >
                                         <Users className="w-4 h-4" />
                                         Connections
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        to="/premium"
+                                        className="flex items-center gap-2 hover:bg-accent/10 transition-colors duration-200"
+                                    >
+                                        <Crown className="w-4 h-4" />
+                                        Premium
                                     </Link>
                                 </li>
 

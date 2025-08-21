@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Heart, Code, Users, Zap, Github, Coffee, MessageCircle, Star, ArrowRight, Globe, Cpu, Terminal, Rocket } from 'lucide-react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
+import { useSelector } from 'react-redux';
 
 export default function Tinder4DevsLanding() {
   const [currentFeature, setCurrentFeature] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+
+  const user = useSelector((state) => state.user);
+  const navigate = useNavigate();
+
+  if (user) {
+    navigate('/')
+  }
 
   useEffect(() => {
     setIsVisible(true);

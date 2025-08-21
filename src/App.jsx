@@ -13,9 +13,10 @@ import SignUp from "./components/SignUp";
 import Launch from "./components/Launch";
 import { useState } from "react";
 import { useEffect } from "react";
+import Premium from "./components/Premium";
 
 function App() {
- 
+
 
 
   return (
@@ -33,6 +34,7 @@ function App() {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/connections" element={<Connections />} />
                 <Route path="/requests" element={<Requests />} />
+                <Route path="/premium" element={<Premium />} />
               </Route>
             </Routes>
           </BrowserRouter>
