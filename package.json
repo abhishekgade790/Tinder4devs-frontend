@@ -15,7 +15,7 @@
     "axios": "^1.10.0",
     "cally": "^0.8.0",
     "daisyui": "^5.0.43",
-    "lucide-react": "^0.539.0",
+    "lucide-react": "^0.263.1",
     "nodemailer": "^7.0.5",
     "react": "^19.1.0",
     "react-datepicker": "^8.4.0",

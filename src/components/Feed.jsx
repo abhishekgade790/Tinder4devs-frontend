@@ -1,19 +1,17 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { BASE_URL } from '../utils/utils'
 import { addFeed } from '../store/feedSlice'
 import UserCard from "./UserCard"
-import { Cpu } from 'lucide-react'
-import { Terminal } from 'lucide-react'
-import { Globe } from 'lucide-react'
-import { Rocket } from 'lucide-react'
+import { Cpu, Terminal, Globe, Rocket } from 'lucide-react'
 import { addRequests } from '../store/requestSlice'
 
 function Feed() {
   const dispatch = useDispatch()
   const feedData = useSelector((store) => store.feed)
   const [error, setError] = useState("")
+  const triedEmptyFetch = useRef(false) // ⬅️ Track empty-fetch attempts
 
   const fetchRequests = async () => {
     try {
@@ -24,33 +22,43 @@ function Feed() {
     }
   };
 
-  useEffect(() => {
-    const fetchFeed = async () => {
-      if (feedData && feedData.length > 0) return;
+  const fetchFeed = async () => {
+    try {
+      const response = await axios.get(BASE_URL + "/user/feed", {
+        withCredentials: true,
+      })
+      dispatch(addFeed(response.data))
 
-      try {
-        const response = await axios.get(BASE_URL + "/user/feed", {
-          withCredentials: true,
-        })
-        dispatch(addFeed(response.data))
-      } catch (err) {
-        setError(err?.response?.data || "Failed to load feed.")
+      // reset the flag if new data comes
+      if (response.data && response.data.length > 0) {
+        triedEmptyFetch.current = false
+      }
+    } catch (err) {
+      setError(err?.response?.data || "Failed to load feed.")
+    }
+  }
+
+  useEffect(() => {
+    if (!feedData || feedData.length === 0) {
+      if (!triedEmptyFetch.current) {
+        fetchFeed()
+        fetchRequests()
+        triedEmptyFetch.current = true
       }
     }
-
-    fetchFeed()
-    fetchRequests();
   }, [feedData])
 
   if (error) return <div className="text-red-500 min-h-screen text-center">{error}</div>
 
   if (!feedData) {
-    <div className="min-h-screen bg-base-200 flex items-center justify-center">
-      <div className="text-center">
-        <div className="loading loading-spinner loading-lg text-primary mb-4"></div>
-        <p className="text-lg text-base-content/70">Loading your Feed...</p>
+    return (
+      <div className="min-h-screen bg-base-200 flex items-center justify-center">
+        <div className="text-center">
+          <div className="loading loading-spinner loading-lg text-primary mb-4"></div>
+          <p className="text-lg text-base-content/70">Loading your Feed...</p>
+        </div>
       </div>
-    </div>
+    )
   }
 
   if (feedData && feedData.length === 0) {
@@ -75,6 +83,7 @@ function Feed() {
           about={feedData[0].about}
           skills={feedData[0].skills}
           _id={feedData[0]._id}
+          isPremium={feedData[0].isPremium}
         />
         {/* Animated background elements */}
         <div className="absolute top-10 left-10 opacity-20">
@@ -91,7 +100,7 @@ function Feed() {
         </div>
       </div>
     ) : (
-      <div className="text-center min-h-screen flex  justify-center items-center">
+      <div className="text-center min-h-screen flex justify-center items-center">
         <span className="loading loading-bars text-primary loading-md"></span>
       </div>
     )

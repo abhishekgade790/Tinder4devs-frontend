@@ -4,8 +4,11 @@ import { BASE_URL } from '../utils/utils';
 import { useToast } from '../utils/ToastProvider';
 import { useDispatch } from 'react-redux';
 import { removeUserFromFeed } from '../store/feedSlice';
+import { BiCrown } from 'react-icons/bi';
+import { Crown } from 'lucide-react';
+import { CrownIcon } from 'lucide-react';
 
-const UserCard = ({ firstName, lastName, age, gender, photoUrl, about, skills, _id }) => {
+const UserCard = ({ firstName, lastName, age, gender, photoUrl, about, skills, _id, isPremium }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
@@ -90,10 +93,10 @@ const UserCard = ({ firstName, lastName, age, gender, photoUrl, about, skills, _
     if (isAnimating || isDragging) {
       return;
     }
-    
+
     // Start animation immediately
     animateSwipe(isLike);
-    
+
     // Handle API call separately
     handleSwipeAction(status, _id, firstName);
   };
@@ -150,6 +153,11 @@ const UserCard = ({ firstName, lastName, age, gender, photoUrl, about, skills, _
               <h2 className="text-2xl font-bold">{firstName} {lastName} {age && (<span className='text-lg font-normal opacity-90'>({age})</span>)}</h2>
             </div>
 
+            {/* is premium icon */}
+            {isPremium && <div className='absolute top-4 right-4 btn btn-circle'>
+              <CrownIcon />
+            </div>}
+
             {/* Info toggle */}
             <button
               className="absolute bottom-4 right-4 btn btn-circle btn-sm bg-base-100/20 border-none text-base-100 hover:bg-base-100/30 backdrop-blur-sm"
@@ -184,8 +192,8 @@ const UserCard = ({ firstName, lastName, age, gender, photoUrl, about, skills, _
                         <div key={index} className="badge badge-primary badge-sm">{skill}</div>
                       ))}
                       {skills?.length > 3 && (
-                        <span 
-                          className="text-sm text-base-content/60 cursor-pointer hover:text-primary" 
+                        <span
+                          className="text-sm text-base-content/60 cursor-pointer hover:text-primary"
                           onClick={(e) => {
                             e.stopPropagation();
                             if (!isDragging && !isAnimating) {

@@ -160,6 +160,7 @@ function EditProfile({ user = {} }) {
                     about={about}
                     skills={skills}
                     _id={user._id}
+                    isPremium={user.isPremium}
                   />
                 </div>
               </div>
