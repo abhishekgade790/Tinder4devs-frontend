@@ -72,7 +72,6 @@ const Login = () => {
     try {
       setLoading(true);
       const response = await axios.post(BASE_URL + "/forgot-password/send-otp", { email });
-      console.log(response)
       if (response.data.success) {
         toast.success("OTP sent to your email", { duration: 3000 });
         setOtpSent(true);

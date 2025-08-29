@@ -29,7 +29,6 @@ function Chat() {
   useEffect(() => {
     fetchChatMessages();
     if (connections?.length === 0) {
-      console.log("Fetching connections...");
       fetchConnections();
     }
   }, []);
@@ -37,7 +36,6 @@ function Chat() {
   const fetchChatMessages = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/chat/${targetUserId}`, { withCredentials: true });
-      console.log(res.data);
       setMessages(res.data.messages || []);
     } catch (error) {
       console.error("Failed to fetch chat history", error);

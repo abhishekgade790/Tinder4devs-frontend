@@ -55,11 +55,9 @@ function Premium() {
     };
 
     const verifyPremiumUser = async () => {
-        console.log("verifying premium user");
         const res = await axios.get(BASE_URL + '/premium/verify', {
             withCredentials: true,
         });
-        console.log(res.data.user);
         dispatch(addUser(res.data.user));
     }
 
@@ -72,8 +70,7 @@ function Premium() {
         })
         const { key, payment } = order.data;
         const { amount, currency, orderId, notes } = payment;
-        console.log(order.data)
-        console.log(key, amount, currency, orderId, notes);
+  
 
         //should open the razorpay dialog box
         const options = {
@@ -96,7 +93,7 @@ function Premium() {
             }
         };
 
-        const rzp = new Razorpay(options);
+        const rzp = new  windRazorpay(options);
         rzp.open();
     }
 

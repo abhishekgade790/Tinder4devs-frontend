@@ -1,12 +1,78 @@
-# React + Vite
+# Innder4Devs - Connecting Developers through Code 👋
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern platform where developers can connect, match, and collaborate based on coding interests and skills.
 
-Currently, two official plugins are available:
+# 🌟 Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Check out the live demo: https://tinder4devs.vercel.app/
 
-## Expanding the ESLint configuration
+# ⚙️ Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Frontend: React, Tailwind CSS, Framer Motion, MagicUI
+
+Backend: Node.js, Express.js
+
+Real-time Communication: Socket.io
+
+Database: MongoDB Atlas
+
+Authentication: JWT
+
+Hosting: Vercel (Frontend), Render (Backend)
+
+# ✨ Features
+
+🔥 Swipe-based interaction tailored for developers
+
+💬 Real-time 1:1 chat powered by Socket.io
+
+🎨 Smooth animations with Framer Motion
+
+🔒 Secure routes and token-based authentication
+
+📁 Modular and scalable project structure
+
+# 🚀 Getting Started
+
+Prerequisites
+
+Node.js (v14 or higher)
+MongoDB connection (local or Atlas)
+
+Installation
+
+Clone the repository
+
+shgit clone https://github.com/abhishekgade790/Tinder4devs-frontend.git
+cd devtinder-web
+
+Install dependencies
+
+npm install
+
+Set up environment variables
+
+Start the development server
+
+shnpm run dev
+
+📄 API Documentation
+API documentation is available at
+
+https://github.com/abhishekgade790/Tinder4devs-frontend
+# 🤝 Contributing
+
+Contributions, issues and feature requests are welcome!
+
+👤 Author
+Abhishek Gade
+Website: LinkedIn
+Twitter: @abhigade79
+GitHub: @abhishekgade790
+LinkedIn: @abhishekgade790
+
+# ⭐ Show your support
+
+Give a ⭐️ if this project helped you!
+
+This README was generated with ❤️
