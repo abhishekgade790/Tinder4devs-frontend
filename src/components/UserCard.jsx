@@ -154,7 +154,7 @@ const UserCard = ({ firstName, lastName, age, gender, photoUrl, about, skills, _
             </div>
 
             {/* is premium icon */}
-            {isPremium && <div className='absolute top-4 right-4 btn btn-circle'>
+            {isPremium && <div className='absolute top-4 right-4 btn btn-circle  border-none text-yellow-400  backdrop-blur-sm'>
               <CrownIcon />
             </div>}
 

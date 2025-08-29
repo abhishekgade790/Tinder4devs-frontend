@@ -11,9 +11,8 @@ import Connections from "./components/Connections";
 import Requests from "./components/Requests";
 import SignUp from "./components/SignUp";
 import Launch from "./components/Launch";
-import { useState } from "react";
-import { useEffect } from "react";
 import Premium from "./components/Premium";
+import Chat from "./components/Chat";
 
 function App() {
 
@@ -35,6 +34,7 @@ function App() {
                 <Route path="/connections" element={<Connections />} />
                 <Route path="/requests" element={<Requests />} />
                 <Route path="/premium" element={<Premium />} />
+                <Route path="/chat/:targetUserId" element={<Chat />} />
               </Route>
             </Routes>
           </BrowserRouter>
