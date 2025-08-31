@@ -36,9 +36,7 @@ const Requests = () => {
     };
 
     useEffect(() => {
-        if (!requests || requests.length === 0) {
             fetchRequests();
-        }
     }, []);
 
     if (!requests) {
@@ -72,7 +70,10 @@ const Requests = () => {
             </div>
             <div className="max-w-3xl mx-auto rounded-lg  divide-y divide-base-300">
                 {requests.map((req) => {
-                    const { firstName, lastName, photoUrl, about, skills } = req.fromUserId;
+                    if (!req.fromUserId) {
+                        return null; // skip this broken request
+                    }
+                    const { firstName, lastName, photoUrl, about } = req.fromUserId;
                     return (
                         <div key={req._id} className="bg-base-200 my-2 rounded-lg p-4 flex items-center justify-between hover:bg-base-300 transition-all">
                             <div className="flex items-center">

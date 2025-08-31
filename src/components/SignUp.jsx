@@ -332,7 +332,7 @@ const SignUpFlow = () => {
                                     <img
                                         src={userData.photoUrl}
                                         alt="Profile Preview"
-                                        className="mask mask-squircle w-24 h-24 object-cover"
+                                        className="mask mask-circle w-24 h-24 object-cover"
                                     />
                                 ) : (
                                     <label className="btn btn-outline btn-sm" disabled>

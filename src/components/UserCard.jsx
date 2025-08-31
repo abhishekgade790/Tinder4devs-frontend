@@ -148,7 +148,7 @@ const UserCard = ({ firstName, lastName, age, gender, photoUrl, about, skills, _
             )}
 
             {/* Gradient and name */}
-            <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-neutral/30 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-base-100/70 to-transparent" />
             <div className="absolute bottom-4 left-4 ">
               <h2 className="text-2xl font-bold">{firstName} {lastName} {age && (<span className='text-lg font-normal opacity-90'>({age})</span>)}</h2>
             </div>
