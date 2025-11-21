@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import validator from "validator";
 import { BASE_URL } from "../utils/utils";
@@ -32,12 +32,6 @@ const SignUpFlow = () => {
         skills: "",
     });
 
-    const [otpSent, setOtpSent] = useState(false);
-    const [otpLoading, setOtpLoading] = useState(false);
-    const [cooldown, setCooldown] = useState(0);
-    const [otp, setOtp] = useState("");
-    const [verified, setVerified] = useState(false);
-
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -50,63 +44,6 @@ const SignUpFlow = () => {
         }
     };
 
-    // Timer countdown for resend OTP
-    useEffect(() => {
-        let timer;
-        if (cooldown > 0) {
-            timer = setInterval(() => {
-                setCooldown((prev) => prev - 1);
-            }, 1000);
-        }
-        return () => clearInterval(timer);
-    }, [cooldown]);
-
-    const sendOtp = async () => {
-        if (!validator.isEmail(userData.email)) {
-            setError("Enter a valid email before requesting OTP.");
-            return;
-        }
-        setError("");
-        setOtpLoading(true);
-        try {
-            const res = await axios.post(`${BASE_URL}/send-otp`, { email: userData.email });
-            if (res.data.success) {
-                setOtpSent(true);
-                setCooldown(60); // disable button for 60s
-                toast.success("OTP sent successfully!");
-            } else {
-                setError(res.data.message || "Failed to send OTP.");
-            }
-        } catch (err) {
-            setError("Error sending OTP. Try again.");
-            console.error(err);
-        } finally {
-            setOtpLoading(false);
-        }
-    };
-
-    const verifyOtp = async () => {
-        if (!otp.trim()) {
-            setError("Please enter the OTP.");
-            return;
-        }
-        setError("");
-        try {
-            const res = await axios.post(`${BASE_URL}/verify-otp`, {
-                email: userData.email,
-                otp,
-            });
-            if (res.data.success) {
-                toast.success("Email verified successfully!");
-                setVerified(true);
-            } else {
-                setError(res.data.message || "Invalid OTP.");
-            }
-        } catch (err) {
-            setError("Error verifying OTP. Try again.");
-            console.error(err);
-        }
-    };
 
     const nextStep = () => {
         if (!userData.email || !userData.password) {
@@ -224,54 +161,14 @@ const SignUpFlow = () => {
                         <>
                             <div>
                                 <label className="label">Email</label>
-                                <div className="flex items-center gap-2">
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        placeholder="example@gmail.com"
-                                        value={userData.email}
-                                        onChange={handleChange}
-                                        className="input input-bordered focus:outline-none w-full"
-                                        disabled={verified} // lock email after verification
-                                    />
-                                    <button
-                                        type="button"
-                                        className={`btn ${verified ? "btn-success" : "btn-warning"} shadow-none`}
-                                        disabled={!userData.email || cooldown > 0 || otpLoading || verified}
-                                        onClick={sendOtp}
-                                    >
-                                        {verified
-                                            ? "Verified ✓"
-                                            : otpLoading
-                                                ? "Sending..."
-                                                : cooldown > 0
-                                                    ? `Resend in ${cooldown}s`
-                                                    : otpSent
-                                                        ? "Resend OTP"
-                                                        : "Send OTP"}
-                                    </button>
-                                </div>
-
-                                {/* show OTP + Verify only if OTP is sent and not verified yet */}
-                                {otpSent && !verified && (
-                                    <>
-                                        <input
-                                            type="text"
-                                            name="otp"
-                                            value={otp}
-                                            onChange={(e) => setOtp(e.target.value)}
-                                            placeholder="Enter OTP"
-                                            className="input w-full mt-2"
-                                        />
-                                        <button
-                                            type="button"
-                                            className="btn btn-primary mt-2"
-                                            onClick={verifyOtp}
-                                        >
-                                            Verify
-                                        </button>
-                                    </>
-                                )}
+                                <input
+                                    type="email"
+                                    name="email"
+                                    placeholder="example@gmail.com"
+                                    value={userData.email}
+                                    onChange={handleChange}
+                                    className="input input-bordered focus:outline-none w-full"
+                                />
                             </div>
 
 
